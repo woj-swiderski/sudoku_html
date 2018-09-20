@@ -4,6 +4,19 @@ body {
     font-weight: bold;
   }
 
+h1 {
+  font-family: serif;
+  font-size: 3rem;
+  font-style: italic;
+  /* text-transform: uppercase; */
+  font-weight: bold;
+  color: brown;
+}
+
+h1::first-letter {
+  font-size: 4rem;
+}
+
 table, td, tr {
   border: 1px solid black;
   border-collapse: collapse;
@@ -32,3 +45,12 @@ tr:first-child {
   border-top: 3px solid;
 }
 
+button {
+  margin: 1rem;
+  background-color: cornflowerblue;
+  height: 2rem;
+  width: 8rem;
+  border: 1px solid black;
+  border-radius: 1rem;
+  cursor: pointer;
+}

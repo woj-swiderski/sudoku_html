@@ -22,6 +22,7 @@ let selectorTable = document.getElementById("selector");
 let selector = generateSelector();
 
 // create sudoku table by backtracking algorithm implemented in generateSudoku()
+// sudoku table is 9x9
 let sudoku = generateSudoku();
 // sudokuBase should ease manipulation of sudokuTable elements
 let sudokuBase = [];
@@ -49,25 +50,61 @@ let sudokuBase = [];
 //     }
 // }
 
+// for (let i = 0; i < 9; i++){
+//     let r = document.createElement("tr");
+//     sudokuTable.appendChild(r);
+//     for (let j = 0; j < 9; j++){
+//         let c = document.createElement("td");
+//         c.id = i + "" + j;
+//         // false if cell is modifiable, true otherwise
+//         c.locked = Math.random() < 0.6-currentLevel/18 ? true : false;
+//         c.value = sudoku[i][j];
+//         // now sudoku is modified for reuse by eventHandlers
+//         sudoku[i][j] = c.locked ? sudoku[i][j] : 0;
+//         c.addEventListener("click", sudokuClick);
+//         // c.addEventListener("mouseenter", sudokuMouseEnter);
+//         c.innerHTML = c.locked ? String(sudoku[i][j]) : "";
+//         if (c.locked) {
+//             c.style.backgroundColor = bgLocked;
+//             selector[c.value - 1].counter++;
+//         }
+//         r.appendChild(c);
+//         sudokuBase.push(c);
+//     }
+// }
+
+
 for (let i = 0; i < 9; i++){
     let r = document.createElement("tr");
     sudokuTable.appendChild(r);
     for (let j = 0; j < 9; j++){
         let c = document.createElement("td");
         c.id = i + "" + j;
-        // false if cell is modifiable, true otherwise
-        c.locked = Math.random() < 0.6-currentLevel/18 ? true : false;
         c.value = sudoku[i][j];
-        // now sudoku is modified for reuse by eventHandlers
-        sudoku[i][j] = c.locked ? sudoku[i][j] : 0;
+        c.locked = false;
         c.addEventListener("click", sudokuClick);
-        c.innerHTML = c.locked ? String(sudoku[i][j]) : "";
-        if (c.locked) {
+        // c.addEventListener("mouseenter", sudokuMouseEnter);
+        sudokuBase.push(c);
+    }
+}
+// now some of sudokuBase cells are locked - you can try different lockCells functions...
+lockCells(sudokuBase);
+
+let rows = sudokuTable.getElementsByTagName("tr");
+for (let i = 0; i < 9; i++){
+    let r = rows[i];
+    let c;
+    for (let j = 0; j < 9; j++){
+        c = sudokuBase[9*i + j];
+        if (c.locked){
             c.style.backgroundColor = bgLocked;
+            c.innerHTML = String(c.value);
             selector[c.value - 1].counter++;
         }
+        else {
+            sudoku[i][j] = 0;
+        }
         r.appendChild(c);
-        sudokuBase.push(c);
     }
 }
 
@@ -339,6 +376,14 @@ function sudokuClick(){
     }
 }
 
+function sudokuMouseEnter(){
+    // this.style.border = "2px solid black";
+}
+
+function sudouMouseOut(){
+    // this.style.border = "1px solid black";
+}
+
 function lockCells(table){
     // table: sudokuBase - locks cells by selecting them from 3x3 subtables 
     for (let i of [10, 13, 16, 37, 40, 43, 64, 67, 70]){
@@ -351,5 +396,27 @@ function lockCells(table){
             table[t].locked = true;
         }
     }
+}
 
+// function lockCells(table){
+//     let temp = [];
+//     for (let i = 0; i < 81; i++){
+//         temp.push(i)
+//     }
+//     temp = temp.sort(function(x,y){return 0.5 - Math.random()});
+//     for (let t of temp.slice(0,30)){
+//         table[t].locked = true;
+//     }
+// }
+
+function solve(){
+    for (let j = 0; j < 81; j++){
+        sudokuBase[j].innerHTML = sudokuBase[j].value;
+        if (sudokuBase[j].locked){
+            sudokuBase[j].style.backgroundColor = bgLocked;
+        }
+        else {
+            sudokuBase[j].style.backgroundColor = bgBackground;
+        }
+    }
 }
