@@ -1,0 +1,13 @@
+.selectorItem, .selectorItemClicked {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    background: silver;
+    text-align: center;
+    cursor: pointer;
+}
+
+.selectorItemClicked {
+    background: #98F1FF;
+}
