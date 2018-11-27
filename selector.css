@@ -11,3 +11,20 @@
 .selectorItemClicked {
     background: #98F1FF;
 }
+
+.sudokuRow {
+    display: table-row;
+    min-width: 360px;
+}
+
+.sudokuCell {
+    display: table-cell;
+    width: 40px;
+    height: 40px;
+    border: 2px solid gray;
+    background: #FFDA76;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    
+}
