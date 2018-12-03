@@ -19,6 +19,9 @@ sudoku.addEventListener('click', sudokuClicked);
 
 const sTable = [];
 
+//~ const helper = document.createElement(table);
+
+
 let helperOn = false;
 
 
@@ -33,7 +36,7 @@ function setupMemory(){
     let temp = {};
     for (let i = 0; i < 9; i++){
         for (let j = 0; j < 9; j++){
-            temp[i + "" + j] = [[], 0, [1,2,3,4,5,6,7,8,9]];
+            temp[i + '' + j] = [[], 0, [1,2,3,4,5,6,7,8,9]];
         }
     }
     return temp;
@@ -270,16 +273,16 @@ function createSudoku(level){
             sudoku_table[i][j] = 0;
         }
     }
-    msg2.textContent = selector_table;
 }
 
 function createSelector(){
+    let row = document.createElement('tr');
+    selector.appendChild(row);
     for (let j=1; j < 10; j++){
-        let item = document.createElement('div');
-        item.classList.add('selectorItem');
+        let item = document.createElement('td');
+        item.classList.add('selectorCell');
         item.textContent = j;
-        item.counter = 0;   // how many times item occured in the table so far
-        selector.appendChild(item);
+        row.appendChild(item);
     }
 }
 
@@ -290,12 +293,23 @@ function sudokuClicked(e){
     }
     let id = e.target.id;
     let i = parseInt(id[0]), j = parseInt(id[1]);
-    if (isPossible(sudoku_table, i, j, currentNumber)){
+
+    if (helperOn && (sudoku_table[i][j]) == 0){
+        e.target.textContent = currentNumber;
+        e.target.classList.add('a' + currentNumber);
+
+        return
+    }
+
+    if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] == 0)){
         selector_table[currentNumber] += 1;
-        msg2.textContent = selector_table;
         e.target.textContent = currentNumber;
         e.target.classList.add('sudokuCellHighlight');
         sudoku_table[i][j] = currentNumber;
+        if (selector_table[currentNumber] == 9){
+            selectorDisableItem(currentNumber);
+        }
+
     }
 }
 
@@ -303,8 +317,11 @@ function selectorClicked(e){
     e.preventDefault();
     if (ARR.includes(e.target.textContent)) {
         currentNumber = parseInt(e.target.textContent);
-        msg.textContent = e.target.textContent;
         highlightAll(currentNumber);
+        for (let c of e.target.parentNode.children) {
+            c.classList.remove('selectorCellHighlight');
+        }
+        e.target.classList.add('selectorCellHighlight');
         return currentNumber;
     }
     return 0; // just to be on the safe side
@@ -313,14 +330,29 @@ function selectorClicked(e){
 function selectorMouseOver(e){
     e.preventDefault();
     if (ARR.includes(e.target.textContent)) {
-        e.target.style.background = '#98F1FF';
+        if (e.target.classList.contains('selectorCellHighlight')){
+            return
+        }
+        e.target.classList.add('selectorCellHighlight');
     }
 }
 
 function selectorMouseOut(e){
     e.preventDefault();
     if (ARR.includes(e.target.textContent)) {
-        e.target.style.background = 'silver';
+        if (e.target.textContent == currentNumber){
+            return
+        }
+        e.target.classList.remove('selectorCellHighlight');
+    }
+}
+
+function selectorDisableItem(x){
+    let row = selector.querySelector('tr');
+    for (let t of row.children){
+        if (t.textContent == x){
+            t.classList.add('selectorCellDisabled');
+        }
     }
 }
 
@@ -332,3 +364,4 @@ function highlightAll(x){
         }
     }
 }
+
