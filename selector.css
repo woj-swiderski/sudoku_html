@@ -21,14 +21,14 @@ table, td, tr {
   border: 1px solid black;
   border-collapse: collapse;
   font-family: sans;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 500;
   color: #532600;
 }
 
 td {
-  width: 40px;
-  height: 40px;
+  min-width: 30px;
+  height: 30px;
   text-align: center;
 }
 
@@ -50,9 +50,11 @@ tr:first-child {
 }
 
 
+/*
 .sudokuCell, .sudokuCellLocked {
-    min-width: 40px;
-    height: 40px;
+*/
+
+.sudokuCell {
     border: 1px solid gray;
     background: #FFECB6;
     text-align: center;
@@ -63,5 +65,27 @@ tr:first-child {
 
 .sudokuCellLocked {
     background: #F1C85A;
+}
 
+.sudokuCellHighlight {
+    background: #7CD3EF;
+}
+
+/* to be removed */
+
+[id=^'#msg']{
+    font-weight: bold;
+}
+
+
+#msg {
+    color: red;
+}
+
+#msg2 {
+    color: green;
+}
+
+#msg3 {
+    color: blue;
 }
