@@ -12,19 +12,56 @@
     background: #98F1FF;
 }
 
-.sudokuRow {
-    display: table-row;
-    min-width: 360px;
+.selectorItemDisabled {
+    background: #C0C0C0;
+    color: #848484;
 }
 
-.sudokuCell {
-    display: table-cell;
-    width: 40px;
+table, td, tr {
+  border: 1px solid black;
+  border-collapse: collapse;
+  font-family: sans;
+  font-size: 16px;
+  font-weight: 700;
+  color: #532600;
+}
+
+td {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+
+td:nth-child(3n+1) {
+  border-left: 3px solid;
+}
+
+td:last-child {
+  border-right: 3px solid;
+}
+
+
+tr:nth-child(3n){
+  border-bottom: 3px solid;
+}
+
+tr:first-child {
+  border-top: 3px solid;
+}
+
+
+.sudokuCell, .sudokuCellLocked {
+    min-width: 40px;
     height: 40px;
-    border: 2px solid gray;
-    background: #FFDA76;
+    border: 1px solid gray;
+    background: #FFECB6;
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
-    
+
+}
+
+.sudokuCellLocked {
+    background: #F1C85A;
+
 }
