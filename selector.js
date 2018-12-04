@@ -21,9 +21,9 @@ const sTable = [];
 
 //~ const helper = document.createElement(table);
 
-
 let helperOn = false;
-
+const helper = document.getElementById('helper');
+createHelper();
 
 let sudoku_table = generateSudoku();
 createSudoku();
@@ -365,3 +365,22 @@ function highlightAll(x){
     }
 }
 
+function createHelper(){
+    const t = document.createElement('table');
+    for (let i = 0; i < 3; i++){
+        let row = document.createElement('tr');
+        for (let j = 0; j < 3; j++){
+            let td = document.createElement('td');
+            td.textContent = i*3 + (j+1);
+            row.appendChild(td);
+        }
+        t.appendChild(row);
+    }
+    helper.appendChild(t);
+    helper.addEventListener('click', helperClicked);
+}
+
+function helperClicked(){
+    helperOn = !helperOn;
+    msg.textContent = helperOn;
+}

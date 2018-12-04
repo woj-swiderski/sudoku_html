@@ -1,33 +1,69 @@
-table, td, tr {
-  border: 1px solid black;
-  border-collapse: collapse;
-  font-family: sans;
-  font-size: 20px;
-  font-weight: 500;
-  color: #532600;
-  margin-bottom: 10px;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 
-td {
-  min-width: 30px;
-  height: 30px;
+table, td, tr {
+  border: 1px solid #4F2400;
+  border-collapse: collapse;
+  font-family: sans;
+}
+
+table.sudoku, .selector, .helper {
+    margin: 10px;
+}
+
+.sudoku td, .selector td {
+  min-width: 32px;
+  height: 32px;
+  font-size: 20px;
+  font-weight: 500;
   text-align: center;
+  vertical-align: middle;
+  color: #4F2400;
+}
+
+.helper td {
+    width: 10px;
+    height: 10px;
+    font-size: 9px;
+    border: 1px solid gray;
+    text-align: center;
+    vertical-align: middle;
+    color: black;
+    background: #FFECB6;
 }
 
 .sudoku td:nth-child(3n+1) {
-  border-left: 3px solid;
+  border-left: 3px solid #4F2400;
 }
 
 .sudoku td:last-child {
-  border-right: 3px solid;
+  border-right: 3px solid #4F2400;
 }
 
 .sudoku tr:nth-child(3n){
-  border-bottom: 3px solid;
+  border-bottom: 3px solid #4F2400;
 }
 
 .sudoku tr:first-child {
-  border-top: 3px solid;
+  border-top: 3px solid #4F2400;
 }
 
 
@@ -57,61 +93,6 @@ td {
 .sudokuCellHighlight {
     background: #7CD3EF;
 }
-
-.a1 {
-    font-size: 9px;
-    text-align: left;
-    vertical-align: top;
-}
-
-.a2 {
-    font-size: 9px;
-    text-align: center;
-    vertical-align: top;
-}
-
-.a3 {
-    font-size: 9px;
-    text-align: rigth;
-    vertical-align: top;
-}
-
-.a4 {
-    font-size: 9px;
-    text-align: left;
-    vertical-align: middle;
-}
-
-.a5 {
-    font-size: 9px;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.a6 {
-    font-size: 9px;
-    text-align: right;
-    vertical-align: middle;
-}
-
-.a7 {
-    font-size: 9px;
-    text-align: left;
-    vertical-align: bottom;
-}
-
-.a8 {
-    font-size: 9px;
-    text-align: center;
-    vertical-align: bottom;
-}
-
-.a9 {
-    font-size: 9px;
-    text-align: right;
-    vertical-align: bottom;
-}
-
 
 
 /* to be removed */
