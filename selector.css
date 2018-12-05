@@ -20,18 +20,22 @@ time, mark, audio, video {
 }
 
 table, td, tr {
-  border: 1px solid #4F2400;
   border-collapse: collapse;
   font-family: sans;
 }
 
-table.sudoku, .selector, .helper {
+table.sudoku, .selector {
+    border: 1px solid #4F2400;
     margin: 10px;
 }
 
 .sudoku td, .selector td {
-  min-width: 32px;
-  height: 32px;
+  border: 1px solid #4F2400;
+/*
+  min-width: 33px;
+*/
+  width: 33px;
+  height: 33px;
   font-size: 20px;
   font-weight: 500;
   text-align: center;
@@ -39,15 +43,48 @@ table.sudoku, .selector, .helper {
   color: #4F2400;
 }
 
-.helper td {
-    width: 10px;
-    height: 10px;
+table.helper, table.innerHelper {
+    border: 0;
+}
+
+table.helper {
+    border: 1px solid #4F2400;
+    margin: 10px;
+    cursor: pointer;
+}
+
+table.helper[on='false'] {
+    background: #FFECB6;
+}
+
+table.helper[on='true'] {
+    background: #7CD3EF;
+}
+
+.helper td, .innerHelper td {
+    border: 0;
+    width: 11px;
+    height: 11px;
     font-size: 9px;
-    border: 1px solid gray;
     text-align: center;
     vertical-align: middle;
     color: black;
-    background: #FFECB6;
+}
+
+.innerHelper td:nth-child(3n+1) {
+    border: 0 !important;
+}
+
+.innerHelper td:last-child {
+    border: 0 !important;
+}
+
+.innerHelper tr:first-child {
+    border: 0 !important;
+}
+
+.innerHelper tr:nth-child(3n) {
+    border: 0 !important;
 }
 
 .sudoku td:nth-child(3n+1) {

@@ -1,8 +1,9 @@
 "use strict";
 const ARR = ["1","2","3","4","5","6","7","8","9"];
 const msg = document.getElementById('msg');
-const msg3 = document.getElementById('msg3');
 const msg2 = document.getElementById('msg2');
+const msg3 = document.getElementById('msg3');
+const div =  document.getElementById('div');
 
 const selector = document.getElementById('selector');
 selector.addEventListener('click', selectorClicked);
@@ -288,15 +289,28 @@ function createSelector(){
 
 function sudokuClicked(e){
     e.preventDefault();
+    msg2.textContent = (e.target.innerHTML == "");
+
     if (e.target.locked){
         return
     }
     let id = e.target.id;
+
+    if ((id === '') && (!helperOn)) {
+        msg.textContent = e.target.parentElement.parentElement.parentElement.id;
+
+        return
+    }
+
     let i = parseInt(id[0]), j = parseInt(id[1]);
 
     if (helperOn && (sudoku_table[i][j]) == 0){
-        e.target.textContent = currentNumber;
-        e.target.classList.add('a' + currentNumber);
+        let f = displayInnerHelper();
+        msg.textContent = f.classList.length;
+
+        e.target.appendChild(f);
+
+
 
         return
     }
@@ -380,7 +394,29 @@ function createHelper(){
     helper.addEventListener('click', helperClicked);
 }
 
+function displayInnerHelper(){
+    const t = document.createElement('table');
+    for (let i = 0; i < 3; i++){
+        let row = document.createElement('tr');
+        for (let j = 0; j < 3; j++){
+            let td = document.createElement('td');
+            td.textContent = i*3 + (j+1);
+            row.appendChild(td);
+        }
+        t.appendChild(row);
+    }
+    t.classList.add('innerHelper');
+    return t
+}
+
+
 function helperClicked(){
     helperOn = !helperOn;
-    msg.textContent = helperOn;
+    helper.setAttribute('on', helperOn);
+    if (helperOn) {
+        div.appendChild(displayInnerHelper());
+    }
+    else {
+        div.innerHTML = '';
+    }
 }
