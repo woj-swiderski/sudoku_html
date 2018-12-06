@@ -20,6 +20,8 @@ sudoku.addEventListener('click', sudokuClicked);
 
 const sTable = [];
 
+const dump = document.getElementById('dump');
+
 //~ const helper = document.createElement(table);
 
 let helperOn = false;
@@ -167,7 +169,9 @@ function randomSample(table, n){
     return res;
 }
 
+
 // generates 9x9 valid sudoku
+
 function generateSudoku(){
     // after filling this table is returned by our function
     // this is stupid - there must be a better way to generate this table
@@ -278,6 +282,7 @@ function createSudoku(level){
     }
 }
 
+
 function createSelector(){
     let row = document.createElement('tr');
     selector.appendChild(row);
@@ -289,73 +294,88 @@ function createSelector(){
     }
 }
 
+
 function sudokuClicked(e){
     e.preventDefault();
 
     if (e.target.locked){
         return
     }
-    let id = e.target.id;
 
-    // id === '' means that e.target = innerHelper table
-    if (id === ''){
-        if (helperOn) {
-            return  // no need to insert innerHelper
-        }
-        else {
-            if (currentNumber) {
-                let iid = e.target.getAttribute('parent_id');
-                let el = document.getElementById(iid);
-                let i = parseInt(iid[0]), j = parseInt(iid[1]);
-                if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] == 0)){
-                    el.innerHTML = '';
-                    selector_table[currentNumber] += 1;
-                    el.textContent = currentNumber;
-                    el.classList.add('sudokuCellHighlight');
-                    sudoku_table[i][j] = currentNumber;
-                    if (selector_table[currentNumber] == 9){
-                        selectorDisableItem(currentNumber);
-                    }
-                }
-                else {
-                    return
-                }
-
-            }
-            else {  // currentNumber still set to 0
-                return
-            }
-
-        }
+    if (!currentNumber){
+        return  // nothing to insert to a cell
     }
 
-    let i = parseInt(id[0]), j = parseInt(id[1]);
+    // FROM NOW ON: currentNumber =/= 0
 
-    if (helperOn && (sudoku_table[i][j]) == 0){
-        let f = displayInnerHelper(e.target.id);
-        msg2.textContent = f.getAttribute('parent_id');
-        msg3.textContent = 'sudoku_table cell empty';
+    let id = e.target.id;
+    msg.textContent = e.target.id;
+    let i, j;
+
+    if (helperOn){
+        // id === '' means that e.target = innerHelper table and we should display
+        // currentNumber in an innerHelper cell
+
+        if (id === '') {
+            let iid = e.target.getAttribute('parent_id');
+            msg2.textContent = iid;
+            let el = document.getElementById(iid);
+            let x = el.querySelector(`[a${currentNumber}]`);
+            x.textContent = currentNumber;
+            return
+        }
+
+        // now id =/= ''  i.e.  id = xy
+
+        i = parseInt(id[0]), j = parseInt(id[1]);
+
+        if (sudoku_table[i][j]) {
+            return  // cell not empty
+        }
+
+        let f = displayInnerHelper(e.target.id, currentNumber);
         e.target.appendChild(f);
 
-        return
     }
+    else {  // helperOn = false
 
-    if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] == 0)){
-        selector_table[currentNumber] += 1;
-        e.target.textContent = currentNumber;
-        e.target.classList.add('sudokuCellHighlight');
-        sudoku_table[i][j] = currentNumber;
-        if (selector_table[currentNumber] == 9){
-            selectorDisableItem(currentNumber);
+        if (id === '') {
+            let iid = e.target.getAttribute('parent_id');
+            let el = document.getElementById(iid);
+            i = parseInt(iid[0]), j = parseInt(iid[1]);
+            if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] == 0)){
+                el.innerHTML = '';
+                selector_table[currentNumber] += 1;
+                el.classList.add('sudokuCellHighlight');
+                el.textContent = currentNumber;
+                sudoku_table[i][j] = currentNumber;
+                if (selector_table[currentNumber] == 9){
+                    selectorDisableItem(currentNumber);
+                }
+            }
         }
+        else {
 
+            i = parseInt(id[0]), j = parseInt(id[1]);
+            if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] == 0)){
+                selector_table[currentNumber] += 1;
+                e.target.classList.add('sudokuCellHighlight');
+                e.target.textContent = currentNumber;
+                sudoku_table[i][j] = currentNumber;
+                if (selector_table[currentNumber] == 9){
+                    selectorDisableItem(currentNumber);
+                }
+            }
+        }
+        dumpSudokuTable();
     }
 }
 
+
 function selectorClicked(e){
     e.preventDefault();
-    if (ARR.includes(e.target.textContent)) {
-        currentNumber = parseInt(e.target.textContent);
+    if (ARR.includes(e.target.innerText)) {             // previously textContent
+        currentNumber = parseInt(e.target.innerText);   // previously textContent
         highlightAll(currentNumber);
         for (let c of e.target.parentNode.children) {
             c.classList.remove('selectorCellHighlight');
@@ -366,6 +386,7 @@ function selectorClicked(e){
     return 0; // just to be on the safe side
 }
 
+
 function selectorMouseOver(e){
     e.preventDefault();
     if (ARR.includes(e.target.textContent)) {
@@ -375,6 +396,7 @@ function selectorMouseOver(e){
         e.target.classList.add('selectorCellHighlight');
     }
 }
+
 
 function selectorMouseOut(e){
     e.preventDefault();
@@ -398,11 +420,12 @@ function selectorDisableItem(x){
 function highlightAll(x){
     for (let s of sTable){
         s.classList.remove('sudokuCellHighlight');
-        if (s.textContent == x){
+        if (s.innerText == x){    // something is wrong here
             s.classList.add('sudokuCellHighlight');
         }
     }
 }
+
 
 function createHelper(){
     const t = document.createElement('table');
@@ -420,32 +443,18 @@ function createHelper(){
 }
 
 
-//~ function displayInnerHelper(){
-    //~ const t = document.createElement('table');
-    //~ for (let i = 0; i < 3; i++){
-        //~ let row = document.createElement('tr');
-        //~ for (let j = 0; j < 3; j++){
-            //~ let td = document.createElement('td');
-            //~ td.textContent = i*3 + (j+1);
-            //~ row.appendChild(td);
-        //~ }
-        //~ t.appendChild(row);
-    //~ }
-    //~ t.classList.add('innerHelper');
-    //~ return t
-//~ }
-
-
-function displayInnerHelper(id){
+function displayInnerHelper(id, x){
     const t = document.createElement('table');
-    t.setAttribute('parent_id', id);
+    t.setAttribute('parent_id', id);    // remember id in parent_id attribute
     for (let i = 0; i < 3; i++){
         let row = document.createElement('tr');
-        row.setAttribute('parent_id', id);
+        row.setAttribute('parent_id', id);      // remember id in parent_id attribute
         for (let j = 0; j < 3; j++){
             let td = document.createElement('td');
-            td.textContent = i*3 + (j+1);
-            td.setAttribute('parent_id', id);
+            //~ td.textContent = i*3 + (j+1);
+            td.setAttribute('parent_id', id);   // remember id in parent_id attribute
+            td.setAttribute(`a${i*3 + (j+1)}`, '');
+            td.textContent = (x == i*3 + (j+1)? x : ' ');
             row.appendChild(td);
         }
         t.appendChild(row);
@@ -465,5 +474,18 @@ function helperClicked(){
     else {
         msg.textContent = 'helper off';
         div.innerHTML = '';
+    }
+}
+
+function dumpSudokuTable(){
+    dump.innerHTML = '';
+    for (let i = 0; i < 9; i++){
+        let row = document.createElement('tr');
+        for (let j = 0; j < 9; j++){
+            let td = document.createElement('td');
+            td.textContent = sudoku_table[i][j]
+            row.appendChild(td);
+        }
+        dump.appendChild(row);
     }
 }
