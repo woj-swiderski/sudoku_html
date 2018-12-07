@@ -49,19 +49,48 @@ table.helper, table.innerHelper {
 }
 */
 
-table.helper {
-    border: 2px solid #4F2400;
-    margin: 10px;
-    cursor: pointer;
-}
+.helper, .cleaner {
+    position: relative;
+    top: 0px;
+    left: 0px;
 
-table.helper[on='false'] {
+    box-shadow: 4px 4px 4px gray;
+
+    display: inline-block;
+    border: 2px solid #4F2400;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
     background: #FFECB6;
 }
 
-table.helper[on='true'] {
-    background: #7CD3EF;
+/*
+.helper[on='false'] {
+    background: #FFECB6;
 }
+*/
+
+.helper[on='true'], .cleaner[on='true'] {
+/*
+    background: #7CD3EF;
+*/
+    top: 5px;
+    left: 5px;
+    box-shadow: unset;
+}
+
+.cleaner[on='true'] {
+    background: #FFECB6;
+}
+
+/*
+.cleaner[on='false'] {
+    background: white;
+}
+*/
+
 
 .helper td, .innerHelper td {
     border: 0;

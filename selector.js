@@ -1,10 +1,14 @@
 "use strict";
 const ARR = ["1","2","3","4","5","6","7","8","9"];
+
+// for debugging
 const msg = document.getElementById('msg');
 const msg2 = document.getElementById('msg2');
 const msg3 = document.getElementById('msg3');
 const div =  document.getElementById('div');
+// ------------
 
+// select number to insert into sudoku
 const selector = document.getElementById('selector');
 selector.addEventListener('click', selectorClicked);
 selector.addEventListener('mouseover', selectorMouseOver);
@@ -12,6 +16,7 @@ selector.addEventListener('mouseout', selectorMouseOut);
 
 // 0 index will be unused. indices 1-9 are counter for registering how many
 // times current number was inserted. this table will be modified by createSudoku
+// and regularly by sudokuClicked
 const selector_table = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let currentNumber = 0; // modified by selector clicks
 
@@ -20,12 +25,16 @@ sudoku.addEventListener('click', sudokuClicked);
 
 const sTable = [];
 
-//~ const dump = document.getElementById('dump');
+const dump = document.getElementById('dump');
 
 
 let helperOn = false;
 const helper = document.getElementById('helper');
 createHelper();
+
+let cleanerOn = false;
+const cleaner = document.getElementById('cleaner');
+cleaner.addEventListener('click', cleanerClicked);
 
 let sudoku_table = generateSudoku();
 createSudoku();
@@ -298,18 +307,28 @@ function sudokuClicked(e){
     e.preventDefault();
 
     if (e.target.locked){
-        return
+        return  // no operation on locked cell allowed
     }
 
     if (!currentNumber){
-        return  // nothing to insert to a cell
+        return  // nothing to insert or clean
     }
 
     // FROM NOW ON: currentNumber =/= 0
 
     let id = e.target.id;
-    msg.textContent = e.target.id;
     let i, j;
+
+    if (cleanerOn) {
+        if (id != ''){      // e.target is a cell
+            i = parseInt(id[0]), j = parseInt(id[1]);
+            e.target.textContent = '';
+            e.target.classList.remove('sudokuCellHighlight');
+            sudoku_table[i][j] = 0;
+            //~ dumpSudokuTable();
+            return
+        }
+    }
 
     if (helperOn){
         // id === '' means that e.target = innerHelper table and we should display
@@ -337,7 +356,8 @@ function sudokuClicked(e){
         e.target.appendChild(f);
         e.target.hasChildren = true;
 
-    }
+    }   // <------ end of helperOn = true
+
     else {  // helperOn = false
 
         if (id === '') {
@@ -345,7 +365,7 @@ function sudokuClicked(e){
             let el = document.getElementById(iid);
             i = parseInt(iid[0]), j = parseInt(iid[1]);
             if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] == 0)){
-                el.innerHTML = '';
+                el.innerHTML = '';      // in particular, all children of el are annihilated
                 el.hasChildren = false;
                 selector_table[currentNumber] += 1;
                 el.classList.add('sudokuCellHighlight');
@@ -356,7 +376,7 @@ function sudokuClicked(e){
                 }
             }
         }
-        else {
+        else { // e.target is a cell
 
             i = parseInt(id[0]), j = parseInt(id[1]);
             if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] == 0)){
@@ -472,14 +492,11 @@ function helperClicked(){
     helperOn = !helperOn;
     helper.setAttribute('on', helperOn);
     if (helperOn) {
-        msg.textContent = 'helper on';
-        div.appendChild(displayInnerHelper());
-    }
-    else {
-        msg.textContent = 'helper off';
-        div.innerHTML = '';
+        cleanerOn = false;
+        cleaner.setAttribute('on', false);
     }
 }
+
 
 function dumpSudokuTable(){
     dump.innerHTML = '';
@@ -491,5 +508,15 @@ function dumpSudokuTable(){
             row.appendChild(td);
         }
         dump.appendChild(row);
+    }
+}
+
+
+function cleanerClicked(){
+    cleanerOn = !cleanerOn;
+    cleaner.setAttribute('on', cleanerOn);
+    if (cleanerOn) {
+        helperOn = false;
+        helper.setAttribute('on', false);
     }
 }
