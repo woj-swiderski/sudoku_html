@@ -20,9 +20,8 @@ sudoku.addEventListener('click', sudokuClicked);
 
 const sTable = [];
 
-const dump = document.getElementById('dump');
+//~ const dump = document.getElementById('dump');
 
-//~ const helper = document.createElement(table);
 
 let helperOn = false;
 const helper = document.getElementById('helper');
@@ -247,7 +246,7 @@ function createSudoku(level){
             el.id = i + "" + j;
             el.textContent = ''; // sudoku_table[i][j];
             el.locked = false;
-            //~ el.help = false; // if help is displayed in a cell
+            el.hasChildren = false;
             el.value = parseInt(sudoku_table[i][j]);
             // add el to corresponding list in arr
             arr[el.value-1].push(el);
@@ -318,10 +317,11 @@ function sudokuClicked(e){
 
         if (id === '') {
             let iid = e.target.getAttribute('parent_id');
-            msg2.textContent = iid;
             let el = document.getElementById(iid);
+            el.hasChildren = true;
             let x = el.querySelector(`[a${currentNumber}]`);
             x.textContent = currentNumber;
+
             return
         }
 
@@ -335,6 +335,7 @@ function sudokuClicked(e){
 
         let f = displayInnerHelper(e.target.id, currentNumber);
         e.target.appendChild(f);
+        e.target.hasChildren = true;
 
     }
     else {  // helperOn = false
@@ -345,6 +346,7 @@ function sudokuClicked(e){
             i = parseInt(iid[0]), j = parseInt(iid[1]);
             if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] == 0)){
                 el.innerHTML = '';
+                el.hasChildren = false;
                 selector_table[currentNumber] += 1;
                 el.classList.add('sudokuCellHighlight');
                 el.textContent = currentNumber;
@@ -367,15 +369,15 @@ function sudokuClicked(e){
                 }
             }
         }
-        dumpSudokuTable();
+        //~ dumpSudokuTable();
     }
 }
 
 
 function selectorClicked(e){
     e.preventDefault();
-    if (ARR.includes(e.target.innerText)) {             // previously textContent
-        currentNumber = parseInt(e.target.innerText);   // previously textContent
+    if (ARR.includes(e.target.textContent)) {
+        currentNumber = parseInt(e.target.textContent);
         highlightAll(currentNumber);
         for (let c of e.target.parentNode.children) {
             c.classList.remove('selectorCellHighlight');
@@ -408,6 +410,7 @@ function selectorMouseOut(e){
     }
 }
 
+
 function selectorDisableItem(x){
     let row = selector.querySelector('tr');
     for (let t of row.children){
@@ -417,10 +420,11 @@ function selectorDisableItem(x){
     }
 }
 
+
 function highlightAll(x){
     for (let s of sTable){
         s.classList.remove('sudokuCellHighlight');
-        if (s.innerText == x){    // something is wrong here
+        if ((!s.hasChildren) && (s.textContent == x)){    // alas, s.textContent == x does not work
             s.classList.add('sudokuCellHighlight');
         }
     }

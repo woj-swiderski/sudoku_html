@@ -43,9 +43,11 @@ table.sudoku, .selector {
   color: #4F2400;
 }
 
+/*
 table.helper, table.innerHelper {
     border: 0;
 }
+*/
 
 table.helper {
     border: 2px solid #4F2400;
@@ -105,9 +107,6 @@ table.helper[on='true'] {
 
 
 .sudokuCell, .selectorCell {
-/*
-    border: 2px solid gray;
-*/
     background: #FFECB6;
     text-align: center;
     vertical-align: middle;
