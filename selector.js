@@ -316,20 +316,15 @@ function sudokuClicked(e){
         return  // no operation on locked cell allowed
     }
 
-    if (!currentNumber){
-        return  // nothing to insert or clean
-    }
-
-    // FROM NOW ON: currentNumber =/= 0
-
     let id = e.target.id;
     let i, j;
+
 
     if (cleanerOn) {
         if (id != ''){      // e.target is a cell
             i = parseInt(id[0]), j = parseInt(id[1]);
             let x = parseInt(e.target.textContent);
-            selector_table[x].counter -= 1;
+            selector_table[x].counter -= 1;     // should never be < 0; maybe
             if (selector_table[x].counter == 8) {
                 selectorEnableItem(x);
             }
@@ -339,9 +334,26 @@ function sudokuClicked(e){
             sudoku_table[i][j] = 0;
 
             dumpCounters();
-            return
+
         }
+        else {  // innherHelper table in the cell
+            let iid = e.target.getAttribute('parent_id');
+            let el = document.getElementById(iid);
+            el.innerHTML = '';
+            el.hasChildren = false;
+        }
+
+        return // work done
     }
+
+
+
+    if (!currentNumber){
+        return  // nothing to insert or clean
+    }
+
+    // FROM NOW ON: currentNumber =/= 0
+
 
     if (helperOn){
         // id === '' means that e.target = innerHelper table and we should display
@@ -409,16 +421,20 @@ function sudokuClicked(e){
 
 function selectorClicked(e){
     e.preventDefault();
+
+    //~ helperOn = false;
+    //~ helper.setAttribute('on', helperOn);
+    cleanerOn = false;
+    cleaner.setAttribute('on', cleanerOn);
+
     if (ARR.includes(e.target.textContent)) {
         currentNumber = parseInt(e.target.textContent);
         highlightAll(currentNumber);
-        for (let c of e.target.parentNode.children) {
-            c.classList.remove('selectorCellHighlight');
+        for (let i = 1; i < 10; i++){
+            selector_table[i].cell.classList.remove('selectorCellHighlight');;
         }
         e.target.classList.add('selectorCellHighlight');
-        return currentNumber;
     }
-    return 0; // just to be on the safe side ?
 }
 
 
@@ -444,6 +460,14 @@ function selectorMouseOut(e){
 }
 
 
+function selectorOff(){
+    for (let i = 1; i < 10; i++){
+        selector_table[i].cell.classList.remove('selectorCellHighlight');
+    }
+}
+
+
+
 function selectorDisableItem(x){
     selector_table[x].cell.classList.add('selectorCellDisabled');
 }
@@ -460,6 +484,13 @@ function highlightAll(x){
         if ((!s.hasChildren) && (s.textContent == x)){    // alas, s.textContent == x does not work
             s.classList.add('sudokuCellHighlight');
         }
+    }
+}
+
+
+function switchOffAll(){
+    for (let s of sTable){
+        s.classList.remove('sudokuCellHighlight');
     }
 }
 
@@ -511,6 +542,22 @@ function helperClicked(){
 }
 
 
+function cleanerClicked(){
+    cleanerOn = !cleanerOn;
+    cleaner.setAttribute('on', cleanerOn);
+    if (cleanerOn) {
+        helperOn = false;
+        helper.setAttribute('on', false);
+
+        switchOffAll();
+        currentNumber = 0;  // switch off selector and sudoku
+        selectorOff();
+    }
+}
+
+
+// ---------- FOR DEBUGGING -----------
+
 function dumpSudokuTable(){
     dump.innerHTML = '';
     for (let i = 0; i < 9; i++){
@@ -534,14 +581,4 @@ function dumpCounters(){
         r.appendChild(td);
     }
     dump_counters.appendChild(r);
-}
-
-
-function cleanerClicked(){
-    cleanerOn = !cleanerOn;
-    cleaner.setAttribute('on', cleanerOn);
-    if (cleanerOn) {
-        helperOn = false;
-        helper.setAttribute('on', false);
-    }
 }
