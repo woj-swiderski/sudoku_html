@@ -7,8 +7,8 @@ const msg = document.getElementById('msg');
 const msg2 = document.getElementById('msg2');
 const msg3 = document.getElementById('msg3');
 const div =  document.getElementById('div');
-const sudoku_dumper = document.getElementById('sudoku_dumper');
-sudoku_dumper.addEventListener('click', dumpSudokuTable);
+//~ const sudoku_dumper = document.getElementById('sudoku_dumper');
+//~ sudoku_dumper.addEventListener('click', dumpSudokuTable);
 // ------------
 
 // select number to insert into sudoku
@@ -30,8 +30,8 @@ sudoku.addEventListener('click', sudokuClicked);
 
 const sTable = [];
 
-const dump = document.getElementById('dump');
-const dump_counters = document.getElementById('dump_counters');
+//~ const dump = document.getElementById('dump');
+//~ const dump_counters = document.getElementById('dump_counters');
 
 let helperOn = false;
 const helper = document.getElementById('helper');
@@ -333,7 +333,7 @@ function sudokuClicked(e){
             e.target.classList.remove('sudokuCellHighlight');
             sudoku_table[i][j] = 0;
 
-            dumpCounters();
+            //~ dumpCounters();
 
         }
         else {  // innherHelper table in the cell
@@ -346,10 +346,10 @@ function sudokuClicked(e){
         return // work done
     }
 
-
+    // cleanerOn = false
 
     if (!currentNumber){
-        return  // nothing to insert or clean
+        return  // nothing to insert
     }
 
     // FROM NOW ON: currentNumber =/= 0
@@ -364,7 +364,12 @@ function sudokuClicked(e){
             let el = document.getElementById(iid);
             el.hasChildren = true;
             let x = el.querySelector(`[a${currentNumber}]`);
-            x.textContent = currentNumber;
+            if (x.textContent == currentNumber){
+                x.textContent = '';
+            }
+            else{
+                x.textContent = currentNumber;
+            }
 
             return
         }
@@ -414,7 +419,7 @@ function sudokuClicked(e){
                 }
             }
         }
-        dumpCounters();
+        //~ dumpCounters();
     }
 }
 
@@ -422,8 +427,6 @@ function sudokuClicked(e){
 function selectorClicked(e){
     e.preventDefault();
 
-    //~ helperOn = false;
-    //~ helper.setAttribute('on', helperOn);
     cleanerOn = false;
     cleaner.setAttribute('on', cleanerOn);
 
@@ -465,7 +468,6 @@ function selectorOff(){
         selector_table[i].cell.classList.remove('selectorCellHighlight');
     }
 }
-
 
 
 function selectorDisableItem(x){
@@ -558,27 +560,27 @@ function cleanerClicked(){
 
 // ---------- FOR DEBUGGING -----------
 
-function dumpSudokuTable(){
-    dump.innerHTML = '';
-    for (let i = 0; i < 9; i++){
-        let row = document.createElement('tr');
-        for (let j = 0; j < 9; j++){
-            let td = document.createElement('td');
-            td.textContent = sudoku_table[i][j]
-            row.appendChild(td);
-        }
-        dump.appendChild(row);
-    }
-}
+//~ function dumpSudokuTable(){
+    //~ dump.innerHTML = '';
+    //~ for (let i = 0; i < 9; i++){
+        //~ let row = document.createElement('tr');
+        //~ for (let j = 0; j < 9; j++){
+            //~ let td = document.createElement('td');
+            //~ td.textContent = sudoku_table[i][j]
+            //~ row.appendChild(td);
+        //~ }
+        //~ dump.appendChild(row);
+    //~ }
+//~ }
 
 
-function dumpCounters(){
-    dump_counters.innerHTML = '';
-    let r = document.createElement('tr');
-    for (let i=1; i<10; i++){
-        let td = document.createElement('td');
-        td.textContent = selector_table[i].counter;
-        r.appendChild(td);
-    }
-    dump_counters.appendChild(r);
-}
+//~ function dumpCounters(){
+    //~ dump_counters.innerHTML = '';
+    //~ let r = document.createElement('tr');
+    //~ for (let i=1; i<10; i++){
+        //~ let td = document.createElement('td');
+        //~ td.textContent = selector_table[i].counter;
+        //~ r.appendChild(td);
+    //~ }
+    //~ dump_counters.appendChild(r);
+//~ }

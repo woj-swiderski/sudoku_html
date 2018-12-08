@@ -49,6 +49,10 @@ table.helper, table.innerHelper {
 }
 */
 
+.fas {
+    padding-top: 8px;
+}
+
 .helper, .cleaner {
     position: relative;
     top: 0px;
@@ -64,6 +68,9 @@ table.helper, table.innerHelper {
     width: 35px;
     height: 35px;
     background: #FFECB6;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
 }
 
 /*
@@ -173,4 +180,8 @@ table.helper, table.innerHelper {
 
 #msg3 {
     color: blue;
+}
+
+.container {
+    display: flex;
 }
