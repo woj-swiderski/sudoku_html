@@ -558,6 +558,7 @@ function cleanerClicked(){
 }
 
 
+
 // ---------- FOR DEBUGGING -----------
 
 //~ function dumpSudokuTable(){
