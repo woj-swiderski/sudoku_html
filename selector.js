@@ -44,7 +44,8 @@ cleaner.addEventListener('click', cleanerClicked);
 let sudoku_table = generateSudoku();
 createSudoku();
 
-
+const solver = document.getElementById('solver');
+solver.addEventListener('click', solveGame);
 
 // for 81 cells we remember: ...
 function setupMemory(){
@@ -524,7 +525,7 @@ function displayInnerHelper(id, x){
             //~ td.textContent = i*3 + (j+1);
             td.setAttribute('parent_id', id);   // remember id in parent_id attribute
             td.setAttribute(`a${i*3 + (j+1)}`, '');
-            td.textContent = (x == i*3 + (j+1)? x : ' ');
+            td.textContent = (x == i*3 + (j+1)? x : '');
             row.appendChild(td);
         }
         t.appendChild(row);
@@ -551,13 +552,27 @@ function cleanerClicked(){
         helperOn = false;
         helper.setAttribute('on', false);
 
-        switchOffAll();
+        switchOffAll();     // remove highlight class from all selector cells
         currentNumber = 0;  // switch off selector and sudoku
         selectorOff();
     }
 }
 
 
+function solveGame(){
+    for (let s of sTable){
+        s.textContent = s.value;
+        s.classList.remove('sudokuCellHighlight');
+    }
+    switchOffAll();
+
+    currentNumber = 0;
+    cleanerOn = false;
+    cleaner.setAttribute('on', false);
+    helperOn = false;
+    helper.setAttribute('on', false);
+
+}
 
 // ---------- FOR DEBUGGING -----------
 
