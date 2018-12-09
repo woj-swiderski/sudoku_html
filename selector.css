@@ -53,7 +53,7 @@ table.helper, table.innerHelper {
     padding-top: 8px;
 }
 
-.helper, .cleaner {
+.helper, .cleaner, .other {
     position: relative;
     top: 0px;
     left: 0px;
@@ -73,6 +73,13 @@ table.helper, table.innerHelper {
     display: table-cell;
 }
 
+.other:active {
+    left: 5px;
+    top: 5px;
+    box-shadow: 2px 2px 2px black;
+}
+
+
 /*
 .helper[on='false'] {
     background: #FFECB6;
@@ -85,7 +92,10 @@ table.helper, table.innerHelper {
 */
     top: 5px;
     left: 5px;
+/*
     box-shadow: unset;
+*/
+    box-shadow: 2px 2px 2px black;
 }
 
 .cleaner[on='true'] {
