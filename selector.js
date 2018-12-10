@@ -1,5 +1,5 @@
-"use strict";
-const ARR = ["1","2","3","4","5","6","7","8","9"];
+'use strict';
+const ARR = ['1','2','3','4','5','6','7','8','9'];
 
 
 // for debugging
@@ -148,7 +148,7 @@ function takeNext(i, j){
     if (i < 8){
         return [i+1, 0];
     }
-    throw new RangeError("Stop");
+    throw new RangeError('Stop');
 }
 
 function takePrev(i, j){
@@ -158,7 +158,7 @@ function takePrev(i, j){
     if (i > 0){
         return [i-1, 8];
     }
-    throw new RangeError("Stop");   // <- this will never happen
+    throw new RangeError('Stop');   // <- this will never happen
 }
 
 
@@ -205,7 +205,7 @@ function generateSudoku(){
     let i = 0;
     let j = 0;
     let w = 0;
-    let key = i + "" + j;
+    let key = i + '' + j;
 
     // the loop will be broken by break
     while (true) {
@@ -219,7 +219,7 @@ function generateSudoku(){
 
                 try {
                     [i, j] = takeNext(i, j);
-                    key = i + "" + j;
+                    key = i + '' + j;
                 }
                 catch (e) {
                     if (e instanceof RangeError) {
@@ -238,7 +238,7 @@ function generateSudoku(){
             memory[key][2] = [1,2,3,4,5,6,7,8,9];
             table[i][j] = 0;
             [i, j] = takePrev(i, j);
-            key = i + "" + j;
+            key = i + '' + j;
         }
     }
     return table;
@@ -258,7 +258,7 @@ function createSudoku(level){
         sudoku.appendChild(row);
         for (let j = 0; j < 9; j++){
             let el = document.createElement('td');
-            el.id = i + "" + j;
+            el.id = i + '' + j;
             el.textContent = ''; // sudoku_table[i][j];
             el.locked = false;
             el.hasChildren = false;
@@ -322,11 +322,11 @@ function sudokuClicked(e){
 
 
     if (cleanerOn) {
-        if (id != ''){      // e.target is a cell
+        if (id){      // e.target is a cell
             i = parseInt(id[0]), j = parseInt(id[1]);
             let x = parseInt(e.target.textContent);
             selector_table[x].counter -= 1;     // should never be < 0; maybe
-            if (selector_table[x].counter == 8) {
+            if (selector_table[x].counter === 8) {
                 selectorEnableItem(x);
             }
 
@@ -360,12 +360,12 @@ function sudokuClicked(e){
         // id === '' means that e.target = innerHelper table and we should display
         // currentNumber in an innerHelper cell
 
-        if (id === '') {
+        if (!id) {
             let iid = e.target.getAttribute('parent_id');
             let el = document.getElementById(iid);
             el.hasChildren = true;
             let x = el.querySelector(`[a${currentNumber}]`);
-            if (x.textContent == currentNumber){
+            if (parseInt(x.textContent) === currentNumber){
                 x.textContent = '';
             }
             else{
@@ -391,18 +391,18 @@ function sudokuClicked(e){
 
     else {  // helperOn = false
 
-        if (id === '') {
+        if (!id) {
             let iid = e.target.getAttribute('parent_id');
             let el = document.getElementById(iid);
             i = parseInt(iid[0]), j = parseInt(iid[1]);
-            if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] == 0)){
+            if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] === 0)){
                 el.innerHTML = '';      // in particular, all children of el are annihilated
                 el.hasChildren = false;
                 selector_table[currentNumber].counter += 1;
                 el.classList.add('sudokuCellHighlight');
                 el.textContent = currentNumber;
                 sudoku_table[i][j] = currentNumber;
-                if (selector_table[currentNumber].counter == 9){
+                if (selector_table[currentNumber].counter === 9){
                     selectorDisableItem(currentNumber);
                 }
             }
@@ -410,12 +410,12 @@ function sudokuClicked(e){
         else { // e.target is a cell
 
             i = parseInt(id[0]), j = parseInt(id[1]);
-            if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] == 0)){
+            if (isPossible(sudoku_table, i, j, currentNumber) && (sudoku_table[i][j] === 0)){
                 selector_table[currentNumber].counter += 1;
                 e.target.classList.add('sudokuCellHighlight');
                 e.target.textContent = currentNumber;
                 sudoku_table[i][j] = currentNumber;
-                if (selector_table[currentNumber].counter == 9){
+                if (selector_table[currentNumber].counter === 9){
                     selectorDisableItem(currentNumber);
                 }
             }
@@ -456,7 +456,7 @@ function selectorMouseOver(e){
 function selectorMouseOut(e){
     e.preventDefault();
     if (ARR.includes(e.target.textContent)) {
-        if (e.target.textContent == currentNumber){
+        if (parseInt(e.target.textContent) === currentNumber){
             return
         }
         e.target.classList.remove('selectorCellHighlight');
@@ -484,7 +484,7 @@ function selectorEnableItem(x){
 function highlightAll(x){
     for (let s of sTable){
         s.classList.remove('sudokuCellHighlight');
-        if ((!s.hasChildren) && (s.textContent == x)){    // alas, s.textContent == x does not work
+        if ((!s.hasChildren) && (parseInt(s.textContent) === x)){    // alas, s.textContent == x does not work
             s.classList.add('sudokuCellHighlight');
         }
     }
@@ -525,7 +525,7 @@ function displayInnerHelper(id, x){
             //~ td.textContent = i*3 + (j+1);
             td.setAttribute('parent_id', id);   // remember id in parent_id attribute
             td.setAttribute(`a${i*3 + (j+1)}`, '');
-            td.textContent = (x == i*3 + (j+1)? x : '');
+            td.textContent = (x === i*3 + (j+1)? x : '');
             row.appendChild(td);
         }
         t.appendChild(row);
@@ -561,7 +561,7 @@ function cleanerClicked(){
 
 function solveGame(){
     for (let s of sTable){
-        s.textContent = s.value;
+        s.innerText = s.value;
         s.classList.remove('sudokuCellHighlight');
     }
     switchOffAll();
