@@ -8,8 +8,8 @@ const msg2 = document.getElementById('msg2');
 const msg3 = document.getElementById('msg3');
 const div =  document.getElementById('div');
 
-//~ const dump_counters = document.getElementById('dump_counters');
-//~ dump_counters.addEventListener('click', dumpCounters);
+const dump_counters = document.getElementById('dump_counters');
+dump_counters.addEventListener('click', dumpCounters);
 
 const dump_sudoku = document.getElementById('dump_sudoku');
 
@@ -48,6 +48,10 @@ createSudoku();
 
 const solver = document.getElementById('solver');
 solver.addEventListener('click', solveGame);
+
+const restarter = document.getElementById('restarter');
+restarter.addEventListener('click', restartGame);
+
 
 // for 81 cells we remember: ...
 function setupMemory(){
@@ -562,14 +566,10 @@ function cleanerClicked(){
 
 
 function solveGame(){
-    //~ dumpSudokuTable();
-    //~ let k = '';
     for (let s of sTable){
-        //~ k += s.value.toString() + ' ';
-        s.innerText = (s.value).toString();
+        s.textContent = (s.value).toString();
         s.classList.remove('sudokuCellHighlight');
     }
-    //~ msg.textContent = k;
 
     currentNumber = 0;
     cleanerOn = false;
@@ -578,6 +578,39 @@ function solveGame(){
     helper.setAttribute('on', false);
 
 }
+
+
+function restartGame(){
+    let i, j;
+
+    for (let i = 1; i < 10; i++) {
+        selector_table[i].counter = 0;
+    }
+
+    for (let s of sTable){
+        if (!s.locked){
+            i = parseInt(s.id[0]), j = parseInt(s.id[1]);
+            sudoku_table[i][j] = 0;
+            s.textContent = '';
+        }
+        else {
+            selector_table[s.value].counter += 1;
+        }
+        s.classList.remove('sudokuCellHighlight');
+    }
+
+    for (let i = 1; i < 10; i++){
+        selector_table[i].cell.classList.remove('selectorCellHighlight');
+        selector_table[i].cell.classList.remove('selectorCellDisabled');
+    }
+
+    currentNumber = 0;
+    cleanerOn = false;
+    cleaner.setAttribute('on', false);
+    helperOn = false;
+    helper.setAttribute('on', false);
+}
+
 
 // ---------- FOR DEBUGGING -----------
 
@@ -595,13 +628,13 @@ function dumpSudokuTable(){
 }
 
 
-//~ function dumpCounters(){
-    //~ dump_counters.innerHTML = '';
-    //~ let r = document.createElement('tr');
-    //~ for (let i=1; i<10; i++){
-        //~ let td = document.createElement('td');
-        //~ td.textContent = selector_table[i].counter;
-        //~ r.appendChild(td);
-    //~ }
-    //~ dump_counters.appendChild(r);
-//~ }
+function dumpCounters(){
+    dump_counters.innerHTML = '';
+    let r = document.createElement('tr');
+    for (let i=1; i<10; i++){
+        let td = document.createElement('td');
+        td.textContent = selector_table[i].counter;
+        r.appendChild(td);
+    }
+    dump_counters.appendChild(r);
+}
