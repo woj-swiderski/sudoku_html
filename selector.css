@@ -70,18 +70,13 @@ table.helper, table.innerHelper {
     background: #FFECB6;
     text-align: center;
     vertical-align: middle;
-/*
-    display: table-cell;
-*/
 }
 
-/*
-.other:active {
-    left: 5px;
-    top: 5px;
-    box-shadow: 2px 2px 2px black;
+.helper:hover, .cleaner:hover, .other:hover {
+    background: #FF9F1B;
+    transform: background 0.5s;
 }
-*/
+
 
 
 /*
@@ -91,14 +86,8 @@ table.helper, table.innerHelper {
 */
 
 .helper[on='true'], .cleaner[on='true'] {
-/*
-    background: #7CD3EF;
-*/
     top: 5px;
     left: 5px;
-/*
-    box-shadow: unset;
-*/
     box-shadow: 2px 2px 2px black;
 }
 
@@ -178,6 +167,14 @@ table.helper, table.innerHelper {
 
 .sudokuCellHighlight {
     background: #7CD3EF;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%
 }
 
 

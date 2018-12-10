@@ -566,6 +566,7 @@ function cleanerClicked(){
 
 
 function solveGame(){
+
     for (let s of sTable){
         s.textContent = (s.value).toString();
         s.classList.remove('sudokuCellHighlight');
@@ -577,6 +578,9 @@ function solveGame(){
     helperOn = false;
     helper.setAttribute('on', false);
     selectorOff();
+
+    buttonDown(this);
+    setTimeout(buttonUp, 100, this);
 }
 
 
@@ -609,8 +613,24 @@ function restartGame(){
     cleaner.setAttribute('on', false);
     helperOn = false;
     helper.setAttribute('on', false);
+
+    buttonDown(this);
+    setTimeout(buttonUp, 100, this);
 }
 
+
+function buttonDown(x){
+    x.style.top = '5px';
+    x.style.left = '5px';
+    x.style.boxShadow = '2px 2px 2px black';
+
+}
+
+function buttonUp(x){
+    x.style.top = '0px';
+    x.style.left = '0px';
+    x.style.boxShadow = '4px 4px 4px gray';
+}
 
 // ---------- FOR DEBUGGING -----------
 
