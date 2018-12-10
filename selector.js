@@ -7,8 +7,12 @@ const msg = document.getElementById('msg');
 const msg2 = document.getElementById('msg2');
 const msg3 = document.getElementById('msg3');
 const div =  document.getElementById('div');
-//~ const sudoku_dumper = document.getElementById('sudoku_dumper');
-//~ sudoku_dumper.addEventListener('click', dumpSudokuTable);
+
+//~ const dump_counters = document.getElementById('dump_counters');
+//~ dump_counters.addEventListener('click', dumpCounters);
+
+const dump_sudoku = document.getElementById('dump_sudoku');
+
 // ------------
 
 // select number to insert into sudoku
@@ -30,8 +34,6 @@ sudoku.addEventListener('click', sudokuClicked);
 
 const sTable = [];
 
-//~ const dump = document.getElementById('dump');
-//~ const dump_counters = document.getElementById('dump_counters');
 
 let helperOn = false;
 const helper = document.getElementById('helper');
@@ -281,7 +283,7 @@ function createSudoku(level){
         for (let l of lockedCells){
             l.locked = true;
             selector_table[l.value].counter += 1;
-            l.textContent = l.value;
+            l.textContent = l.value.toString();
             l.classList.replace('sudokuCell', 'sudokuCellLocked');
         }
     }
@@ -560,11 +562,14 @@ function cleanerClicked(){
 
 
 function solveGame(){
+    //~ dumpSudokuTable();
+    //~ let k = '';
     for (let s of sTable){
-        s.innerText = s.value;
+        //~ k += s.value.toString() + ' ';
+        s.innerText = (s.value).toString();
         s.classList.remove('sudokuCellHighlight');
     }
-    switchOffAll();
+    //~ msg.textContent = k;
 
     currentNumber = 0;
     cleanerOn = false;
@@ -576,18 +581,18 @@ function solveGame(){
 
 // ---------- FOR DEBUGGING -----------
 
-//~ function dumpSudokuTable(){
-    //~ dump.innerHTML = '';
-    //~ for (let i = 0; i < 9; i++){
-        //~ let row = document.createElement('tr');
-        //~ for (let j = 0; j < 9; j++){
-            //~ let td = document.createElement('td');
-            //~ td.textContent = sudoku_table[i][j]
-            //~ row.appendChild(td);
-        //~ }
-        //~ dump.appendChild(row);
-    //~ }
-//~ }
+function dumpSudokuTable(){
+    dump_sudoku.innerHTML = '';
+    for (let i = 0; i < 9; i++){
+        let row = document.createElement('tr');
+        for (let j = 0; j < 9; j++){
+            let td = document.createElement('td');
+            td.textContent = sudoku_table[i][j]
+            row.appendChild(td);
+        }
+        dump_sudoku.appendChild(row);
+    }
+}
 
 
 //~ function dumpCounters(){
