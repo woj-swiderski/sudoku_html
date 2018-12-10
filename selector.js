@@ -576,7 +576,7 @@ function solveGame(){
     cleaner.setAttribute('on', false);
     helperOn = false;
     helper.setAttribute('on', false);
-
+    selectorOff();
 }
 
 
